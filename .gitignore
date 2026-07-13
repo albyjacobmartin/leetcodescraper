@@ -20,3 +20,6 @@ build/
 .idea/
 *.suo
 *.ntvs*
+__pycache__/
+*.py[cod]
+*$py.class

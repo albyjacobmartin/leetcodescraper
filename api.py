@@ -32,10 +32,9 @@ def graphql_request(query, variables=None):
         cookies=COOKIES,
     )
 
-    print("Status Code:", response.status_code)
-
     try:
+        response.raise_for_status()
         return response.json()
     except Exception:
         print(response.text)
-        return None
+        raise

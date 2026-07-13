@@ -1,6 +1,7 @@
-from api import graphql_request
 from collections import defaultdict
 from datetime import datetime
+
+from api import graphql_request
 
 # -----------------------------
 # Fetch all submissions
@@ -14,7 +15,6 @@ while True:
     query {{
       submissionList(offset: {offset}, limit: 20) {{
         submissions {{
-          title
           titleSlug
           statusDisplay
           timestamp
@@ -37,12 +37,13 @@ while True:
         slug = submission["titleSlug"]
         timestamp = int(submission["timestamp"])
 
+        # Keep only the latest Accepted submission
         if slug not in latest or timestamp > latest[slug]:
             latest[slug] = timestamp
 
     offset += 20
 
-print(f"\nUnique solved problems: {len(latest)}")
+print(f"Total Problems Solved: {len(latest)}")
 
 # -----------------------------
 # Group by date
@@ -55,15 +56,19 @@ for timestamp in latest.values():
     daily[date] += 1
 
 # -----------------------------
-# Print cumulative summary
+# Generate Markdown Report
 # -----------------------------
-import csv
 
 running_total = 0
 
-with open("summary.csv", "w", newline="", encoding="utf-8") as file:
-    writer = csv.writer(file)
-    writer.writerow(["Day", "Date", "Completed Today", "Total Completed"])
+with open("summary.md", "w", encoding="utf-8") as file:
+
+    file.write("# LeetCode Progress Summary\n\n")
+    file.write(f"**Total Problems Solved:** {len(latest)}\n\n")
+    file.write(f"**Days with Activity:** {len(daily)}\n\n")
+
+    file.write("| Day | Date | Completed Today | Total Completed |\n")
+    file.write("|----:|------------|----------------:|----------------:|\n")
 
     for day_number, date in enumerate(sorted(daily.keys()), start=1):
         completed_today = daily[date]
@@ -73,8 +78,8 @@ with open("summary.csv", "w", newline="", encoding="utf-8") as file:
             f"Day {day_number} - {date} - +{completed_today} - Total: {running_total}"
         )
 
-        writer.writerow(
-            [day_number, date, completed_today, running_total]
+        file.write(
+            f"| {day_number} | {date} | {completed_today} | {running_total} |\n"
         )
 
-print("\nSaved to summary.csv")
+print("\nMarkdown report saved as summary.md")

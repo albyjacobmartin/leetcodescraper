@@ -1,3 +1,5 @@
+from requests.exceptions import RequestException
+
 from progress import (
     fetch_all_submissions,
     get_latest_accepted,
@@ -9,28 +11,34 @@ from report import generate_markdown
 
 def main():
 
-    print("Fetching submissions...")
+    try:
 
-    submissions = fetch_all_submissions()
+        submissions = fetch_all_submissions()
 
-    print(f"Fetched {len(submissions)} submissions.")
+        latest = get_latest_accepted(submissions)
 
-    print("Processing latest accepted submissions...")
+        daily = group_by_date(latest)
 
-    latest = get_latest_accepted(submissions)
+        generate_markdown(daily)
 
-    daily = group_by_date(latest)
+        print("✓ summary.md generated successfully.")
 
-    print("Generating report...")
+    except RequestException:
+        print("\nError: Unable to connect to LeetCode.")
+        print("Please check your internet connection and try again.")
 
-    generate_markdown(daily)
+    except RuntimeError as e:
+        print(f"\nError: {e}")
 
-    print()
+        if "session" in str(e).lower():
+            print("Your LEETCODE_SESSION may have expired.")
 
-    print(f"✓ Total Problems : {len(latest)}")
-    print(f"✓ Active Days    : {len(daily)}")
-    print()
-    print("Report saved as summary.md")
+    except KeyError:
+        print("\nError: LeetCode API response has changed.")
+        print("The script needs to be updated.")
+
+    except Exception as e:
+        print(f"\nUnexpected error: {e}")
 
 
 if __name__ == "__main__":

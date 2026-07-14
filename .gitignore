@@ -1,25 +1,22 @@
-.DS_Store
-Thumbs.db
-.env
-.env.local
-*.pem
-*.key
-node_modules/
-.pnp/
-.venv/
-env/
-vendor/
-dist/
-build/
-*.exe
-*.dll
-*.so
-*.log
-.eslintcache
-.vscode/
-.idea/
-*.suo
-*.ntvs*
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
+*.pyo
+
+# Virtual Environment
+.venv/
+venv/
+env/
+
+# Environment Variables
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Generated files
+summary.md

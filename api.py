@@ -28,11 +28,17 @@ def graphql_request(query, variables=None):
         json=payload,
         headers=HEADERS,
         cookies=COOKIES,
+        timeout=30,
     )
 
     response.raise_for_status()
 
-    return response.json()
+    data = response.json()
+
+    if "errors" in data:
+        raise RuntimeError(data["errors"][0]["message"])
+
+    return data
 
 
 def fetch_submission_page(offset, limit):

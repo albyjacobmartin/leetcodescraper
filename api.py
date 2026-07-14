@@ -4,8 +4,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-LEETCODE_SESSION = os.getenv("LEETCODE_SESSION")
-
 URL = "https://leetcode.com/graphql"
 
 HEADERS = {
@@ -15,7 +13,7 @@ HEADERS = {
 }
 
 COOKIES = {
-    "LEETCODE_SESSION": LEETCODE_SESSION
+    "LEETCODE_SESSION": os.getenv("LEETCODE_SESSION")
 }
 
 
@@ -32,9 +30,22 @@ def graphql_request(query, variables=None):
         cookies=COOKIES,
     )
 
-    try:
-        response.raise_for_status()
-        return response.json()
-    except Exception:
-        print(response.text)
-        raise
+    response.raise_for_status()
+
+    return response.json()
+
+
+def fetch_submission_page(offset, limit):
+    query = f"""
+    query {{
+      submissionList(offset: {offset}, limit: {limit}) {{
+        submissions {{
+          titleSlug
+          statusDisplay
+          timestamp
+        }}
+      }}
+    }}
+    """
+
+    return graphql_request(query)["data"]["submissionList"]["submissions"]

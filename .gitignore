@@ -1,22 +1,12 @@
-# Python
 __pycache__/
 *.py[cod]
 *.pyo
-
-# Virtual Environment
 .venv/
 venv/
 env/
-
-# Environment Variables
 .env
-
-# IDE
 .vscode/
 .idea/
-
-# macOS
 .DS_Store
-
-# Generated files
 summary.md
+progress.json

@@ -1,7 +1,6 @@
 import os
 import requests
 from dotenv import load_dotenv
-
 load_dotenv()
 
 URL = "https://leetcode.com/graphql"
@@ -31,7 +30,6 @@ def graphql_request(query, variables=None):
     if "errors" in data:
         raise RuntimeError(data["errors"][0]["message"])
     return data
-
 
 def fetch_submission_page(offset, limit):
     query = f"""

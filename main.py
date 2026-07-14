@@ -1,11 +1,9 @@
 from requests.exceptions import RequestException
-
 from progress import (
     fetch_all_submissions,
     get_latest_accepted,
     group_by_date,
 )
-
 from report import generate_markdown
 
 def main():

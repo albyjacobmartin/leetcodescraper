@@ -2,6 +2,10 @@
 
 A lightweight Python tool that fetches your complete LeetCode submission history using the GraphQL API and generates both a Markdown progress report and a progress curve image.
 
+## Acknowledgments
+
+This project was designed and implemented by me with development assistance from ChatGPT (OpenAI), including brainstorming, debugging, refactoring, and documentation support.
+
 ## Features
 
 - Fetches all submissions from LeetCode using GraphQL
